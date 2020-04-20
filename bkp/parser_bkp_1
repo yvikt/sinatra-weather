@@ -1,0 +1,65 @@
+module Parser
+
+  class Sinoptic
+
+    def initialize(url)
+      @url = url
+    end
+
+    def scrape
+      weather = [] # массив хешей для кажного дня прогноза
+      dates = [] # даты
+      temp = []
+
+      doc = Nokogiri::HTML(open(@url))
+
+      doc.xpath('//*[@class="day-link"]').each do |node| # все узлы HTML c class="day-link"
+        dates << Date.parse( node.attribute('data-link').value.split('/').last ) # объекты Date из строк-дат
+      end
+      doc.xpath('//div[contains(@class, "main ")]/div[@class="temperature"]//span').each_with_object([]) { |n| temp << n.text }
+      temp_a = temp.each_slice(2).to_a
+
+      # binding.pry
+      dates.each_with_index do |d, i|
+        # данные одного дня
+        day = {
+                date: '',
+                temp: {min: '', max: '', feel: ''},
+                # wind: {speed: '', direction: ''},
+                # precipitation: '',
+                # sky: '',
+                # humidity: '',
+                # pressure: ''
+        }
+
+        # binding.pry
+        day[:date] = I18n.localize(d, :format => '%A %e %B', :locale => 'en')
+        # binding.pry
+        day[:temp][:min] = temp_a[i][0]
+        day[:temp][:max] = temp_a[i][1]
+
+        # binding.pry
+
+        weather[i] = day
+
+        # binding.pry
+      end
+
+      # binding.pry
+
+      weather
+    end
+
+  end
+
+
+
+  class MeteoGov
+
+  end
+
+  class Gismeteo
+
+  end
+
+end

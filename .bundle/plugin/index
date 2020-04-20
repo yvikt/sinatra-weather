@@ -1,0 +1,10 @@
+---
+commands:
+  graph: "bundler-dependency_graph"
+hooks:
+load_paths:
+  bundler-dependency_graph:
+  - "/home/vic/RubymineProjects/Sinatra_2/.bundle/plugin/gems/bundler-dependency_graph-0.1.0/lib"
+plugin_paths:
+  bundler-dependency_graph: "/home/vic/RubymineProjects/Sinatra_2/.bundle/plugin/gems/bundler-dependency_graph-0.1.0"
+sources:
